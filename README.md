@@ -1,132 +1,159 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ⚽ Club Cancha — Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST del sistema de reservas de canchas de **Club Cancha**, desarrollada con **NestJS** y **MySQL**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Es el backend del frontend en React ([club-cancha-frontend](https://github.com/Belen-Bulacio/club-cancha-frontend)).
 
-## Description
+> 🚧 **Proyecto en desarrollo.** Por ahora está creada la estructura de módulos y la base de datos; la lógica de cada módulo se va a ir completando.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 👥 Integrantes — Grupo 6
 
-## Project setup
+| Integrante | Módulo |
+|---|---|
+| Lourdes Ortega | Auth y Users |
+| Analía Roldan | Canchas |
+| Laura Soria | Horarios |
+| Emilse Andrada | Reservas |
+| Belén Bulacio | Clientes |
 
-```bash
-$ npm install
+## 🛠️ Tecnologías
+
+- **NestJS** (Node.js + TypeScript)
+- **MySQL** (administrado con MySQL Workbench)
+- **Postman** para probar y documentar los endpoints
+
+## 🧩 ¿Cómo se conecta todo?
+
+Todo el proyecto se ejecuta de forma **local**:
+
+```text
+Frontend (React)   →   Backend (NestJS)   →   Base de datos (MySQL)
+localhost:5173         localhost:4000         localhost:3306
 ```
 
-## Compile and run the project
+El frontend nunca se conecta directamente a la base de datos: le pide los datos al backend.
 
-```bash
-# development
-$ npm run start
+## 🚀 Instalación
 
-# watch mode
-$ npm run start:dev
+1. Clonar el repositorio:
 
-# production mode
-$ npm run start:prod
+   ```bash
+   git clone https://github.com/emilseandrada/club-cancha-backend.git
+   cd club-cancha-backend
+   ```
+
+2. Instalar las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+3. Iniciar MySQL (desde XAMPP o MySQL Server).
+
+4. Crear la base de datos: abrir `database/club_cancha.sql` en MySQL Workbench y ejecutarlo completo.
+
+5. Crear el archivo `.env` en la raíz del proyecto (ver abajo).
+
+6. Levantar el servidor:
+
+   ```bash
+   npm run start:dev
+   ```
+
+## 🔐 Variables de entorno
+
+Crear un archivo `.env` en la raíz con estas variables, completando el usuario y la contraseña de MySQL de cada integrante:
+
+```env
+PORT=4000
+DATABASE_URL=mysql://usuario:password@localhost:3306/club_cancha
+API_BASE_URL=http://localhost:4000/
 ```
 
-## Run tests
+> El archivo `.env` **no se sube** al repositorio (está en el `.gitignore`).
 
-```bash
-# unit tests
-$ npm run test
+**Nota:** La configuración de variables de entorno y la conexión a MySQL se encuentran en desarrollo. Definir `DATABASE_URL` no establece automáticamente la conexión con la base de datos.
 
-# e2e tests
-$ npm run test:e2e
+## 🗄️ Base de datos
 
-# test coverage
-$ npm run test:cov
+El script `database/club_cancha.sql` crea la base `club_cancha` con sus tablas, relaciones y datos de prueba.
+
+| Tabla | Guarda |
+|---|---|
+| `usuarios` | Usuarios que ingresan al panel de administración |
+| `clientes` | Clientes que reservan (nombre y teléfono) |
+| `canchas` | Canchas del club y su deporte |
+| `tarifas` | Precio de cada cancha según duración y franja horaria |
+| `horarios` | Turnos del club, de 08:00 a 23:00 |
+| `reservas` | Reservas: cancha, cliente, horario, fecha, duración, seña y estado |
+
+**Relaciones:**
+
+```text
+clientes  1 ──── N  reservas  N ──── 1  canchas  1 ──── N  tarifas
+usuarios  1 ──── N  reservas  N ──── 1  horarios
 ```
 
-## Deployment
+- Cada reserva pertenece a un cliente, una cancha y un horario, y la registra un usuario.
+- Cada cancha tiene varias tarifas, según la duración y la franja (día o noche).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 📁 Estructura
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```text
+club-cancha-backend/
+├── database/
+│   └── club_cancha.sql
+└── src/
+    ├── main.ts
+    └── modules/
+        ├── app/
+        ├── auth/        login y registro
+        ├── users/       CRUD de usuarios
+        ├── canchas/
+        ├── clientes/
+        ├── horarios/
+        └── reservas/
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Los módulos se organizan mediante archivos `controller`, `service` y `module`. Según su implementación, también pueden incluir carpetas `dto` y `entities`.
 
-## Observability
+## 🔗 Endpoints (provisorios)
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+La estructura CRUD habitual de los recursos generados por NestJS contempla las siguientes operaciones:
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+| Método | Ruta | Acción |
+|---|---|---|
+| POST | `/modulo` | Crear |
+| GET | `/modulo` | Listar todos |
+| GET | `/modulo/:id` | Buscar uno |
+| PATCH | `/modulo/:id` | Editar |
+| DELETE | `/modulo/:id` | Eliminar |
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+Módulos: `users`, `auth`, `canchas`, `clientes`, `horarios`, `reservas`.
 
-To add it to this project, run this and approve the code it prints at [observe.nestjs.com/link](https://observe.nestjs.com/link) - signing up for free if you have no account:
+Ejemplo de ruta prevista: `GET http://localhost:4000/canchas`.
 
-```bash
-$ npx @nestjs/observe link
-```
+> Estas rutas son orientativas. La disponibilidad y el funcionamiento de cada endpoint dependen de la implementación de su módulo. El módulo de autenticación puede utilizar rutas diferentes.
 
-It installs `@nestjs/observe`, wires it into `AppModule` and `main.ts`, and writes the app key and secret into `.env`, which every `nest start` script (`start`, `start:dev`, `start:debug`) then loads. In production, set `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` in the environment instead.
+## 📮 Postman
 
-Or do it by hand:
+Los endpoints se probarán y documentarán en Postman, en la colección **Club Cancha**:
 
-```bash
-$ npm install @nestjs/observe
-```
+- Una carpeta por módulo, con sus peticiones correspondientes.
+- Un entorno **Local** con la variable `base_url`, para no repetir la dirección en cada petición.
+- Ejemplo de petición: `{{base_url}}/canchas`.
 
-Then follow the [setup guide](https://docs.nestjs.com/observability/sdk) - it takes a single import and an app key.
+## 🌿 Ramas
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+| Rama | Uso |
+|---|---|
+| `main` | Versión estable |
+| `dev` | Integración del desarrollo |
+| `feature/...` | Nuevas funcionalidades |
+| `fix/...` | Correcciones |
+| `refactor/...` | Reorganización del código |
+| `docs/...` | Documentación |
 
-## Resources
+Ramas de trabajo recientes: feature/reservas, feature/canchas, feature/config-env y docs/readme. Las funcionalidades se integran a dev mediante Pull Requests.
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Cada cambio se trabaja en su propia rama y se integra a `dev` mediante un Pull Request.
