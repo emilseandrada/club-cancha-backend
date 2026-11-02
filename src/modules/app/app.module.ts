@@ -7,9 +7,13 @@ import { ClientesModule } from '../clientes/clientes.module';
 import { HorariosModule } from '../horarios/horarios.module';
 import { ReservasModule } from '../reservas/reservas.module';
 import { UsersModule } from '../users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     AuthModule,
     CanchasModule,
     ClientesModule,
