@@ -3,8 +3,8 @@ import {
   IsString,
   IsNotEmpty,
   MaxLength,
-  IsIn,
-  IsOptional,
+  IsInt,
+  Min,
 } from 'class-validator';
 
 export class CreateCanchaDto {
@@ -15,25 +15,9 @@ export class CreateCanchaDto {
   })
   nombre: string;
 
-  @IsString({ message: 'El deporte debe ser un texto.' })
-  @IsNotEmpty({ message: 'El deporte es obligatorio.' })
-  @IsIn(['Fútbol 5', 'Fútbol 7', 'Pádel'], {
-    message: 'El deporte debe ser Fútbol 5, Fútbol 7 o Pádel.',
-  })
-  deporte: string;
-
-  @IsString({ message: 'El tipo debe ser un texto.' })
-  @IsNotEmpty({ message: 'El tipo es obligatorio.' })
-  @IsIn(['Fútbol', 'Pádel'], {
-    message: 'El tipo debe ser Fútbol o Pádel.',
-  })
-  tipo: string;
-
-  @IsOptional()
-  @IsString({ message: 'La imagen debe ser un texto.' })
-  @MaxLength(255, {
-    message: 'La imagen no puede superar los 255 caracteres.',
-  })
-  imagen?: string;
+  @IsInt({ message: 'El deporte debe ser un número entero.' })
+  @Min(1, { message: 'El deporte debe tener un ID positivo.' })
+  deporteId: number;
 }
+
 
