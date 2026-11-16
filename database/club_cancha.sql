@@ -52,7 +52,7 @@ CREATE TABLE tarifas (
 -- Turnos del club: de 08:00 a 23:00
 CREATE TABLE horarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  hora TIME NOT NULL UNIQUE
+  hora CHAR(5) NOT NULL UNIQUE
 );
 
 -- La seña no se guarda: es la mitad del precio de la tarifa y se calcula.
