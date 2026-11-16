@@ -1,0 +1,115 @@
+// Esquema de Prisma del Club Cancha (base normalizada hasta 3FN)
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Rol {
+  admin
+  empleado
+}
+
+enum TipoDeporte {
+  Futbol @map("Fútbol")
+  Padel  @map("Pádel")
+}
+
+enum Franja {
+  dia
+  noche
+}
+
+enum EstadoReserva {
+  reservada
+  cancelada
+}
+
+// Usuarios del sistema: el dueño (admin) y los empleados. Los clientes no ingresan.
+model Usuario {
+  id       Int       @id @default(autoincrement())
+  nombre   String    @db.VarChar(100)
+  email    String    @unique @db.VarChar(100)
+  password String    @db.VarChar(255)
+  rol      Rol       @default(empleado)
+  creadoEn DateTime  @default(now()) @map("creado_en")
+  reservas Reserva[]
+
+  @@map("usuarios")
+}
+
+model Cliente {
+  id       Int       @id @default(autoincrement())
+  nombre   String    @db.VarChar(50)
+  apellido String    @db.VarChar(50)
+  telefono String    @unique @db.Char(10)
+  reservas Reserva[]
+
+  @@map("clientes")
+}
+
+model Deporte {
+  id      Int         @id @default(autoincrement())
+  nombre  String      @unique @db.VarChar(30)
+  tipo    TipoDeporte
+  canchas Cancha[]
+  tarifas Tarifa[]
+
+  @@map("deportes")
+}
+
+model Cancha {
+  id        Int       @id @default(autoincrement())
+  nombre    String    @unique @db.VarChar(50)
+  deporteId Int       @map("deporte_id")
+  deporte   Deporte   @relation(fields: [deporteId], references: [id])
+  reservas  Reserva[]
+
+  @@map("canchas")
+}
+
+// El precio depende del deporte, la duración y la franja
+model Tarifa {
+  id        Int     @id @default(autoincrement())
+  deporteId Int     @map("deporte_id")
+  duracion  Decimal @db.Decimal(2, 1)
+  franja    Franja
+  precio    Decimal @db.Decimal(10, 2)
+  deporte   Deporte @relation(fields: [deporteId], references: [id])
+
+  @@unique([deporteId, duracion, franja])
+  @@map("tarifas")
+}
+
+// Turnos del club: de 08:00 a 23:00
+model Horario {
+  id       Int       @id @default(autoincrement())
+  hora     String    @unique @db.Char(5)
+  reservas Reserva[]
+
+  @@map("horarios")
+}
+
+// La seña no se guarda: es la mitad del precio y se calcula.
+model Reserva {
+  id        Int           @id @default(autoincrement())
+  canchaId  Int           @map("cancha_id")
+  clienteId Int           @map("cliente_id")
+  horarioId Int           @map("horario_id")
+  usuarioId Int           @map("usuario_id")
+  fecha     DateTime      @db.Date
+  duracion  Decimal       @db.Decimal(2, 1)
+  politica  Boolean       @default(true)
+  estado    EstadoReserva @default(reservada)
+  cancha    Cancha        @relation(fields: [canchaId], references: [id])
+  cliente   Cliente       @relation(fields: [clienteId], references: [id])
+  horario   Horario       @relation(fields: [horarioId], references: [id])
+  usuario   Usuario       @relation(fields: [usuarioId], references: [id])
+
+  @@map("reservas")
+}
