@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CanchasService } from './canchas.service';
 import { CreateCanchaDto } from './dto/create-cancha.dto';
 import { UpdateCanchaDto } from './dto/update-cancha.dto';
@@ -18,17 +28,20 @@ export class CanchasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.canchasService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.canchasService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCanchaDto: UpdateCanchaDto) {
-    return this.canchasService.update(+id, updateCanchaDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCanchaDto: UpdateCanchaDto,
+  ) {
+    return this.canchasService.update(id, updateCanchaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.canchasService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.canchasService.remove(id);
   }
 }
