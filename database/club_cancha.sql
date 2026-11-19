@@ -77,11 +77,11 @@ CREATE TABLE reservas (
 --  Datos de prueba
 
 INSERT INTO usuarios (nombre, email, password, rol) VALUES
-('Lourdes Ortega', 'lourdes@clubcancha.com', '1234', 'admin'),
-('Emilse Andrada', 'emilse@clubcancha.com', '1234', 'admin'),
-('Analía Roldan', 'analia@clubcancha.com', '1234', 'empleado'),
-('Belén Bulacio', 'belen@clubcancha.com', '1234', 'empleado'),
-('Laura Soria', 'laura@clubcancha.com', '1234', 'empleado');
+('Lourdes Ortega', 'lourdes@clubcancha.com', '$2b$12$wfY7U9Y3ATd3L5tPI1HOKOkF0FErV2i/bKHdnYTJR1Cz/c2o.CLji', 'admin'),
+('Emilse Andrada', 'emilse@clubcancha.com', '$2b$12$slmOZr0EdbZNYSQtiuswkeG3hK.qllSg4WHeGPCygae3P5a028A7W', 'admin'),
+('Analía Roldan', 'analia@clubcancha.com', '$2b$12$T3PXDjIB3J8v6d2fdu.Zz.Bt3s6skc/x2ChBR3o0CxJsv2MdOnmuq', 'empleado'),
+('Belén Bulacio', 'belen@clubcancha.com', '$2b$12$nAsawT9Gq7M0a.117W.qJ.VPnfMswkDOVmSdz8CqJ2uD2YAUXOiUu', 'empleado'),
+('Laura Soria', 'laura@clubcancha.com', '$2b$12$fhjWTO0mgaBvXsIFxKC2HOEOaQvG1l304wcB.F3TiVXaoli/DWDLW', 'empleado');
 
 INSERT INTO clientes (nombre, apellido, telefono) VALUES
 ('Juan', 'Pérez', '3884000000'),
